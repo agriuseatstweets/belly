@@ -44,7 +44,7 @@
 (defn pull-request [messages]
   (-> (PullRequest/newBuilder)
       (.setMaxMessages messages)
-      (.setReturnImmediately false)
+      (.setReturnImmediately true)
       (.setSubscription (get-subscription))
       (.build)))
 
@@ -89,15 +89,23 @@
       (.getService)
       (.create (blob-info bucket filename) (utf s) (make-array Storage$BlobTargetOption 0))))
 
+(defn upload-tweets [tweets]
+  (upload 
+   (env :belly-location) 
+   (.toString (Instant/now)) 
+   (join "" (map get-data tweets))))
+
 (defn write [n p]
   (let [subscriber (make-subscriber)]
     (try
-      (let [tweets (flatten (map #(pull subscriber %) (repeat p n)))
-            string-data (join "" (map get-data tweets))]
-        (do
-          (log/info (str "Belly writing: " (count tweets)))
-          (upload (env :belly-location) (.toString (Instant/now)) string-data)
-          (map #(ack subscriber %) (partition p tweets))))
+      (let [tweet-groups (remove nil? (map #(pull subscriber %) (repeat p n)))
+            tweets (flatten tweet-groups)]
+        (if (empty? tweets)
+          (log/warn "No tweets to write!")
+          (do
+            (log/info (str "Belly writing: " (count tweets)))
+            (upload-tweets tweets)
+            (doall (map #(ack subscriber %) tweet-groups)))))
       (finally (.close subscriber)))))
 
 (defn -main  []
