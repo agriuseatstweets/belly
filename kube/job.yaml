@@ -6,6 +6,8 @@ spec:
   schedule: "*/5 * * * *"
   jobTemplate:
     spec:
+      completions: 2
+      parallelism: 2
       template:
         spec:
           restartPolicy: OnFailure
@@ -21,11 +23,11 @@ spec:
               - name: GOOGLE_PROJECT_ID
                 value: "toixotoixo"
               - name: GOOGLE_PUBSUB_SUBSCRIPTION
-                value: "agrius-tweethouse-test-belly"
+                value: "agrius-tweethouse-test-belly-2"
               - name: BELLY_LOCATION
                 value: "agrius-tweethouse-test"
               - name: BELLY_SIZE
-                value: "35"
+                value: "20"
               - name: LS_JAVA_OPTS
                 value: "-Xmx1536m -Xms512m"
             volumeMounts:
@@ -36,5 +38,3 @@ spec:
             - name: keys
               secret:
                 secretName: agrius-belly-keys
-
-
