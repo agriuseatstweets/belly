@@ -44,7 +44,7 @@
 (defn pull-request [messages]
   (-> (PullRequest/newBuilder)
       (.setMaxMessages messages)
-      (.setReturnImmediately true)
+      (.setReturnImmediately false)
       (.setSubscription (get-subscription))
       (.build)))
 
