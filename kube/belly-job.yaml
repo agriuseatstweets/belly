@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: agrius-belly
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: agrius-belly
+            image: nandanrao/agrius-belly
+            resources:
+              requests:
+                memory: "1024Mi"
+            env:
+              - name: GOOGLE_APPLICATION_CREDENTIALS
+                value: "/usr/share/keys/key.json"
+              - name: GOOGLE_PROJECT_ID
+                value: "toixotoixo"
+              - name: GOOGLE_PUBSUB_SUBSCRIPTION
+                value: "agrius-tweethouse-test-belly"
+              - name: BELLY_LOCATION
+                value: "agrius-tweethouse-test"
+              - name: BELLY_SIZE
+                value: "35"
+              - name: LS_JAVA_OPTS
+                value: "-Xmx1536m -Xms512m"
+            volumeMounts:
+              - name: keys
+                mountPath: /usr/share/keys
+                readOnly: true
+          volumes:
+            - name: keys
+              secret:
+                secretName: agrius-belly-keys
+
+
