@@ -3,8 +3,8 @@ kind: Job
 metadata:
   name: agrius-belly-catchup
 spec:
-  completions: 24
-  parallelism: 3
+  completions: 32
+  parallelism: 4
   backoffLimit: 24
   template:
     spec:
@@ -21,7 +21,7 @@ spec:
           - name: GOOGLE_PROJECT_ID
             value: "toixotoixo"
           - name: GOOGLE_PUBSUB_SUBSCRIPTION
-            value: "agrius-tweethouse-test-belly"
+            value: "agrius-test-belly"
           - name: BELLY_LOCATION
             value: "agrius-tweethouse-test"
           - name: BELLY_SIZE

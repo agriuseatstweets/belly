@@ -6,8 +6,8 @@ spec:
   schedule: "*/5 * * * *"
   jobTemplate:
     spec:
-      completions: 2
-      parallelism: 2
+      completions: 3
+      parallelism: 3
       template:
         spec:
           restartPolicy: OnFailure
@@ -16,20 +16,20 @@ spec:
             image: nandanrao/agrius-belly
             resources:
               requests:
-                memory: "1024Mi"
+                memory: "372Mi"
             env:
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: "/usr/share/keys/key.json"
               - name: GOOGLE_PROJECT_ID
                 value: "toixotoixo"
               - name: GOOGLE_PUBSUB_SUBSCRIPTION
-                value: "agrius-tweethouse-test-belly-2"
+                value: "agrius-india-belly"
               - name: BELLY_LOCATION
-                value: "agrius-tweethouse-test"
+                value: "agrius-tweethouse"
               - name: BELLY_SIZE
                 value: "20"
               - name: LS_JAVA_OPTS
-                value: "-Xmx1536m -Xms512m"
+                value: "-Xmx1024m -Xms256m"
             volumeMounts:
               - name: keys
                 mountPath: /usr/share/keys
