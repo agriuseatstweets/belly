@@ -10,7 +10,7 @@
     (cond
       (= q "kafka") kafka/write
       (= q "pubsub") pubsub/write
-      (throw (RuntimeException. (str "We don't have a queue that matches: " q))))))
+      :else (throw (RuntimeException. (str "We don't have a queue that matches: " q))))))
 
 (defn -main  []
   ((get-writer) (Integer/parseInt (env :belly-size))))
