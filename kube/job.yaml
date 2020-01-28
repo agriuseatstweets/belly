@@ -1,33 +1,33 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: agrius-belly
+  name: agrius-bellyback
 spec:
   schedule: "*/5 * * * *"
   jobTemplate:
     spec:
-      completions: 3
-      parallelism: 3
+      completions: 1
+      parallelism: 1
       template:
         spec:
           restartPolicy: OnFailure
           containers:
           - name: agrius-belly
-            image: nandanrao/agrius-belly
+            image: agriuseatstweets/bellyback
             resources:
               requests:
                 memory: "372Mi"
             env:
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: "/usr/share/keys/key.json"
-              - name: GOOGLE_PROJECT_ID
-                value: "toixotoixo"
-              - name: GOOGLE_PUBSUB_SUBSCRIPTION
-                value: "agrius-india-belly"
+              - name: BELLY_QUEUE
+                value: "kafka"
+              - name: KAFKA_BROKERS
+                value: "kafka:9092"
               - name: BELLY_LOCATION
-                value: "agrius-tweethouse"
+                value: "spain-tweets-backup"
               - name: BELLY_SIZE
-                value: "20"
+                value: "30"
               - name: LS_JAVA_OPTS
                 value: "-Xmx1024m -Xms256m"
             volumeMounts:
@@ -37,4 +37,4 @@ spec:
           volumes:
             - name: keys
               secret:
-                secretName: agrius-belly-keys
+                secretName: agrius-bellyback-keys
