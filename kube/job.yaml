@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: agrius-bellyback
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "*/15 * * * *"
   jobTemplate:
     spec:
       completions: 1
@@ -13,7 +13,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: agrius-belly
-            image: agriuseatstweets/bellyback
+            image: agriuseatstweets/bellyback:0.0.1
             resources:
               requests:
                 memory: "372Mi"
@@ -24,6 +24,8 @@ spec:
                 value: "kafka"
               - name: KAFKA_BROKERS
                 value: "kafka:9092"
+              - name: BELLY_TOPIC
+                value: "tweets"
               - name: BELLY_LOCATION
                 value: "spain-tweets-backup"
               - name: BELLY_SIZE
