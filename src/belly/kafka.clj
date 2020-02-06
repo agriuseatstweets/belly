@@ -4,11 +4,16 @@
             [clojure.tools.logging :as log]
             [belly.gcsfs :as gcsfs]))
 
+
+;;10 minute default
+(defn get-poll-interval [] (Integer/parseInt (env :kafka-poll-interval)))
+
 (defn get-consumer []
   (let [c (kc/consumer {:bootstrap.servers (env :kafka-brokers)
                         :group.id          "bellyback"
                         :auto.offset.reset "earliest"
                         :max.poll.records 1000
+                        :max.poll.interval.ms (get-poll-interval)
                         :enable.auto.commit "false"}
                        (kc/string-deserializer)
                        (kc/string-deserializer))]
